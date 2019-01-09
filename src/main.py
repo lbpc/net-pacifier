@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import datetime
 import logging
 import requests
 import signal
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
-from datetime import date
 from elasticsearch.helpers import scan
 from elasticsearch import Elasticsearch
 from pythonjsonlogger import jsonlogger
@@ -26,7 +26,7 @@ FILTER_ACTION = 'setCookie'
 
 def get_nginx_hosts(es_host, es_index_template):
     es = Elasticsearch(es_host)
-    index = date.today().strftime(es_index_template)
+    index = datetime.datetime.utcnow().date().strftime(es_index_template)
     return [b['key'].split('.')[0] for b in es.search(index=index, body={'size': 0,
                                                                          'aggs': {
                                                                              'hostnames': {
@@ -41,7 +41,7 @@ def get_nginx_hosts(es_host, es_index_template):
 
 def find_bad_guys(es_host, es_index_template, es_query, interval, min_score):
     es = Elasticsearch(es_host)
-    index = date.today().strftime(es_index_template)
+    index = datetime.datetime.utcnow().date().strftime(es_index_template)
     q = {'query': {
             'bool': {
                 'must': [
