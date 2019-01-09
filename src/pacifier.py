@@ -91,13 +91,13 @@ class Checklist:
         for self.cur_addr in self.data.keys():
             self.cur_req = self.data[self.cur_addr]
             score = 0
-            matched = {}
+            matched = []
             for check, id, comment in ((f, n[3:].upper(), f.__doc__) for n, f in vars(self.__class__).items()
                                        if callable(f) and n.startswith('if_')):
                 match, points = check(self)
                 if match:
                     score += points
-                    matched[id] = {'score': points, 'description': comment}
+                    matched.append({'check': id, 'score': points, 'description': comment})
             if score >= self.min_score: results.append({'address': self.cur_addr, 'score': score,
                                                         'threshold': self.min_score, 'details': matched})
         return results
