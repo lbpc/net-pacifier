@@ -103,7 +103,7 @@ def main():
             ban_bad_guys(hosts, set((e['address'] for e in bad_guys)), CHECK_INTERVAL, FILTER_ACTION, URL_TEMPLATE)
             for each in bad_guys:
                 logging.info('{} added to filters'.format(each['address']), extra=each)
-            time.sleep(time.time() + CHECK_INTERVAL - start)
+            time.sleep(CHECK_INTERVAL - (time.time() - start))
         except Exception as e:
             logging.exception(e)
 
