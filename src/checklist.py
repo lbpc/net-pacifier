@@ -35,11 +35,11 @@ class CMSBrute(Checklist):
 
     @score(2)
     def if_too_low_intervals(self):
-        """мода множества интервалов между запросами меньше или равна 1с
+        """мода множества интервалов между запросами меньше или равна 1с; 
         если множество мультимодально, то медиана меньше или равна 1с
 
-        (https://en.m.wikipedia.org/wiki/Mode_(statistics) ,
-        https://en.m.wikipedia.org/wiki/Median )
+        ( см. https://en.wikipedia.org/wiki/Mode_(statistics) ,
+        https://en.wikipedia.org/wiki/Median )
         """
         it = self.cur_req
         intervals = [i - it.timestamps[idx-1] for idx, i in enumerate(it.timestamps) if idx > 0]
