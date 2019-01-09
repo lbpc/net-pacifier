@@ -98,6 +98,6 @@ class Checklist:
                 if match:
                     score += points
                     matched.append({'check': id, 'score': points, 'description': comment})
-            if score >= self.min_score: results.append({'address': self.cur_addr, 'score': score,
-                                                        'threshold': self.min_score, 'details': matched})
+            if score >= self.min_score: results.append({'address': self.cur_addr, 'total_score': score,
+                                                        'min_score': self.min_score, 'details': matched})
         return results
