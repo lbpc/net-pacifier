@@ -27,11 +27,11 @@ class CMSBrute(Checklist):
 
     @score(2)
     def if_too_high_rps(self):
-        """3 и более запроса в секунду"""
+        """2 и более запроса в секунду"""
         it = self.cur_req
         reqs_total = len(it.timestamps)
         rps = reqs_total / ((it.timestamps[-1] - it.timestamps[0]) or self.interval)
-        return rps >= 3 and reqs_total > 2
+        return rps >= 2 and reqs_total > 2
 
     @score(2)
     def if_too_low_intervals(self):
