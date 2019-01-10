@@ -108,3 +108,8 @@ class CMSBrute(Checklist):
     def if_fraud_google_bot(self):
         """поддельный бот Google"""
         return 'google.com/bot' in ''.join(self.cur_req.user_agents) and not self._is_google_bot
+
+    @score(1)
+    def if_same_request_size(self):
+        """более 10 запросов, и все запросы имеют одинаковый размер в байтах"""
+        return len(self.cur_req.timestamps) > 10 and len(self.cur_req.req_sizes) == 1

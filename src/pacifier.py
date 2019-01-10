@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import calendar
+import logging
 from collections import defaultdict
 from cymruwhois import Client as Whois
 from datetime import datetime
@@ -12,6 +13,7 @@ class ReqData:
         self._paths = set()
         self._hosts = set()
         self._user_agents = set()
+        self._req_sizes = set()
         self._timestamps = []
         self._geo_country_name = data.get('geoip').get('country_name')
         self.update(data)
@@ -27,6 +29,9 @@ class ReqData:
 
     @property
     def geo_country_name(self): return self._geo_country_name
+
+    @property
+    def req_sizes(self): return self._req_sizes
 
     @property
     def timestamps(self): return self._timestamps
@@ -100,4 +105,6 @@ class Checklist:
                     matched.append({'check': id, 'score': points, 'description': comment})
             if score >= self.min_score: results.append({'address': self.cur_addr, 'total_score': score,
                                                         'min_score': self.min_score, 'details': matched})
+            logging.debug('{} checked'.format(self.cur_addr), extra={'score': score, 'details': matched,
+                                                                     'data': self.cur_req})
         return results
