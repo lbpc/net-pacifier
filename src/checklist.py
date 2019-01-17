@@ -1,6 +1,7 @@
 import socket
 import statistics
 
+from ipaddress import IPv4Address, IPv4Network
 from pacifier import Checklist, score
 
 
@@ -113,3 +114,21 @@ class CMSBrute(Checklist):
     def if_same_request_size(self):
         """более 10 запросов, и все запросы имеют одинаковый размер в байтах"""
         return len(self.cur_req.timestamps) > 10 and len(self.cur_req.req_sizes) == 1
+
+    @score(-5)
+    def if_from_cloudflare(self):
+        """запрос с CloudFlare"""
+        return any((IPv4Address(self.cur_addr) in IPv4Network(n) for n in ('103.21.244.0/22',
+                                                                           '103.22.200.0/22',
+                                                                           '103.31.4.0/22',
+                                                                           '104.16.0.0/12',
+                                                                           '108.162.192.0/18',
+                                                                           '131.0.72.0/22',
+                                                                           '141.101.64.0/18',
+                                                                           '162.158.0.0/15',
+                                                                           '172.64.0.0/13',
+                                                                           '173.245.48.0/20',
+                                                                           '188.114.96.0/20',
+                                                                           '190.93.240.0/20',
+                                                                           '197.234.240.0/22',
+                                                                           '198.41.128.0/17')))
