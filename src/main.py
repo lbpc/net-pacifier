@@ -15,7 +15,7 @@ from pythonjsonlogger import jsonlogger
 from checklist import CMSBrute
 
 
-CHECK_INTERVAL = 600
+CHECK_INTERVAL = 120
 ES_HOST = 'es.intr'
 ES_INDEX_TEMPLATE = 'nginx-%Y.%m.%d' 
 ES_QUERY_CMS_BRUTE = '(path:xmlrpc.php OR path:administrator.php OR path:wp-login.php) AND method:POST AND NOT code:301'
@@ -112,7 +112,7 @@ def main():
             start = time.time()
             hosts = get_nginx_hosts(ES_HOST, ES_INDEX_TEMPLATE)
             bad_guys = find_bad_guys(ES_HOST, ES_INDEX_TEMPLATE, ES_QUERY_CMS_BRUTE, CHECK_INTERVAL, MIN_SCORE)
-            bad_guys.extend(find_bad_guys(ES_HOST, ES_INDEX_TEMPLATE, ES_QUERY_CMS_BRUTE, CHECK_INTERVAL * 6, MIN_SCORE))
+            bad_guys.extend(find_bad_guys(ES_HOST, ES_INDEX_TEMPLATE, ES_QUERY_CMS_BRUTE, CHECK_INTERVAL * 30, MIN_SCORE))
             ban_bad_guys(hosts, set((e['address'] for e in bad_guys)), CHECK_INTERVAL, FILTER_ACTION, URL_TEMPLATE)
             for each in bad_guys:
                 logging.info('{} added to filters'.format(each['address']), extra=each)
