@@ -17,8 +17,8 @@ from checklist import CMSBrute
 
 CHECK_INTERVAL = 120
 ES_HOST = 'es.intr'
-ES_INDEX_TEMPLATE = 'nginx-%Y.%m.%d' 
-ES_QUERY_CMS_BRUTE = '(path:xmlrpc.php OR path:administrator.php OR path:wp-login.php) AND method:POST AND NOT code:301'
+ES_INDEX_TEMPLATE = 'nginx-%Y.%m.%d'
+ES_QUERY_CMS_BRUTE = '(path:xmlrpc.php OR path:administrator.php OR path:wp-login.php OR path:admin) AND method:POST AND NOT code:301'
 MIN_SCORE = 3
 URL_TEMPLATE = 'http://{}.intr/ip-filter'
 FILTER_ACTION = 'setCookie'
