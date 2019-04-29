@@ -45,20 +45,29 @@ def find_bad_guys(es_host, es_index_template, es_query, interval, min_score):
     index = datetime.datetime.utcnow().date().strftime(es_index_template)
     q = {'query': {
             'bool': {
-                'must': [
-                    {'query_string': {
-                        'query': es_query,
-                        'analyze_wildcard': True,
-                        'default_field': '*'
-                    }
-                    },
-                    {'range': {
-                        '@timestamp': {
-                            'gte': int(round(time.time() * 1000)) - interval * 1000,
-                            'format': 'epoch_millis',
-                            'lte': int(round(time.time() * 1000))
+                'must_not': [
+                    {
+                        'exists': {
+                            'field': 'remote_user'
                         }
                     }
+                ],
+                'must': [
+                    {
+                        'query_string': {
+                            'query': es_query,
+                            'analyze_wildcard': True,
+                            'default_field': '*'
+                        }
+                    },
+                    {
+                        'range': {
+                            '@timestamp': {
+                                'gte': int(round(time.time() * 1000)) - interval * 1000,
+                                'format': 'epoch_millis',
+                                'lte': int(round(time.time() * 1000))
+                            }
+                        }
                     }
                 ]
             }
