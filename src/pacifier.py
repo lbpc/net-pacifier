@@ -13,6 +13,7 @@ class ReqData:
         self._paths = set()
         self._hosts = set()
         self._user_agents = set()
+        self._referers = set()
         self._req_sizes = set()
         self._timestamps = []
         self._geo_country_name = data.get('geoip').get('country_name')
@@ -28,6 +29,9 @@ class ReqData:
     def user_agents(self): return self._user_agents
 
     @property
+    def referers(self): return self._referers
+
+    @property
     def geo_country_name(self): return self._geo_country_name
 
     @property
@@ -40,9 +44,11 @@ class ReqData:
         path = data.get('path')
         host = data.get('http_host')
         user_agent = data.get('user_agent_raw')
+        referer = data.get('referer')
         if path: self._paths.add(path)
         if host: self._hosts.add(host)
         if user_agent: self._user_agents.add(user_agent)
+        if referer: self._referers.add(referer)
         self._timestamps.append(calendar.timegm(datetime.strptime(data['@timestamp'],
                                                                   "%Y-%m-%dT%H:%M:%S.%fZ").timetuple()))
         self._timestamps.sort()

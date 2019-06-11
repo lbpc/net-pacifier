@@ -2,6 +2,7 @@ import socket
 import statistics
 
 from ipaddress import IPv4Address, IPv4Network
+from urllib import parse
 from pacifier import Checklist, score
 
 
@@ -132,3 +133,8 @@ class CMSBrute(Checklist):
                                                                            '190.93.240.0/20',
                                                                            '197.234.240.0/22',
                                                                            '198.41.128.0/17')))
+
+    @score(-2)
+    def if_referer_contains_host(self):
+        """Host и netloc в Referer совпадают"""
+        return self.cur_rec.hosts == set(parse.urlparse(r).netloc for r in self.cur_rec.referers)
