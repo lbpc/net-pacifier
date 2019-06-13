@@ -137,4 +137,4 @@ class CMSBrute(Checklist):
     @score(-2)
     def if_referer_contains_host(self):
         """Host и netloc в Referer совпадают"""
-        return self.cur_rec.hosts == set(parse.urlparse(r).netloc for r in self.cur_rec.referers)
+        return self.cur_req.hosts == set(parse.urlparse(r).netloc for r in self.cur_req.referers)
