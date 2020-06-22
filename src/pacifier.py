@@ -54,8 +54,8 @@ class ReqData:
         self._timestamps.sort()
 
     def __str__(self):
-        return ("ReqData(paths={0.paths}, hosts={0.hosts}, user_agents={0.user_agents},
-                "referers={0.referers}, geo_country_name='{0.geo_country_name}',
+        return ("ReqData(paths={0.paths}, hosts={0.hosts}, user_agents={0.user_agents}, "
+                "referers={0.referers}, geo_country_name='{0.geo_country_name}', "
                 "req_sizes={0.req_sizes}, timestamps={0.timestamps})").format(self)
 
 
