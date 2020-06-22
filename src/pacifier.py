@@ -53,6 +53,11 @@ class ReqData:
                                                                   "%Y-%m-%dT%H:%M:%S.%fZ").timetuple()))
         self._timestamps.sort()
 
+    def __str__(self):
+        return ("ReqData(paths={0.paths}, hosts={0.hosts}, user_agents={0.user_agents},
+                "referers={0.referers}, geo_country_name='{0.geo_country_name}',
+                "req_sizes={0.req_sizes}, timestamps={0.timestamps})").format(self)
+
 
 def score(points):
     def wrapper(f):
@@ -111,6 +116,6 @@ class Checklist:
                     matched.append({'check': id, 'score': points, 'description': comment})
             if score >= self.min_score: results.append({'address': self.cur_addr, 'total_score': score,
                                                         'min_score': self.min_score, 'details': matched})
-            logging.debug('{} checked'.format(self.cur_addr), extra={'score': score, 'details': matched,
-                                                                     'data': self.cur_req})
+            logging.debug('{} checked'.format(self.cur_addr), extra={'total_score': score, 'details': matched,
+                                                                     'data': self.cur_req, 'address': self.cur_addr})
         return results
