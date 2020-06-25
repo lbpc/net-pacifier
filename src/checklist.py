@@ -37,7 +37,7 @@ class CMSBrute(Checklist):
 
     @score(2)
     def if_too_low_intervals(self):
-        """мода множества интервалов между запросами меньше или равна 1с; 
+        """мода множества интервалов между запросами меньше или равна 1с;
         если множество мультимодально, то медиана меньше или равна 1с
 
         ( см. https://en.wikipedia.org/wiki/Mode_(statistics) ,
@@ -138,3 +138,9 @@ class CMSBrute(Checklist):
     def if_referer_contains_host(self):
         """Host и netloc в Referer совпадают"""
         return self.cur_req.hosts == set(parse.urlparse(r).netloc for r in self.cur_req.referers)
+
+    @score(2)
+    def if_wordpress_bruteforce(self):
+        """запросы исключительно к /wp-login.php и /xmlrpc.php более, чем одного Host"""
+        return len(self.cur_req.hosts) > 1 and \
+               set(p.lstrip('/') for p in self.cur_req.paths) == {'wp-login.php', 'xmlrpc.php'}
