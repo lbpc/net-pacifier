@@ -110,10 +110,13 @@ class Checklist:
             matched = []
             for check, id, comment in ((f, n[3:].upper(), f.__doc__) for n, f in vars(self.__class__).items()
                                        if callable(f) and n.startswith('if_')):
-                match, points = check(self)
-                if match:
-                    score += points
-                    matched.append({'check': id, 'score': points, 'description': comment})
+                try:
+                    match, points = check(self)
+                    if match:
+                        score += points
+                        matched.append({'check': id, 'score': points, 'description': comment})
+                except Exception as e:
+                        logging.error('Exception occured while checking {}: {}'.format(check, e))
             if score >= self.min_score: results.append({'address': self.cur_addr, 'total_score': score,
                                                         'min_score': self.min_score, 'details': matched})
             logging.debug('{} checked'.format(self.cur_addr), extra={'total_score': score, 'details': matched,
