@@ -138,8 +138,8 @@ def main():
             hosts = get_nginx_hosts()
 
             # Clean up bad_guys_remember.
-            for ip in bad_guys_remember.keys():
-                if (bad_guys_remember[ip]["last_block_time"] < (time.time() - BLOCK_TIME_TTL)):
+            for ip in list(bad_guys_remember.keys()):
+                if bad_guys_remember[ip]["last_block_time"] < (time.time() - BLOCK_TIME_TTL):
                     bad_guys_remember.pop(ip)
 
             bad_guys = find_bad_guys(ES_HOST, ES_INDEX_TEMPLATE, ES_QUERY_CMS_BRUTE, CHECK_INTERVAL, MIN_SCORE)
@@ -150,6 +150,7 @@ def main():
             time.sleep(max(0, CHECK_INTERVAL - (time.time() - start)))
         except Exception as e:
             logging.exception(e)
+
 
 if __name__ == '__main__':
     main()
