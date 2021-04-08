@@ -3,7 +3,7 @@ import statistics
 
 from ipaddress import IPv4Address, IPv4Network
 from urllib import parse
-from pacifier import Checklist, score
+from pacifier.pacifier import Checklist, score
 
 
 class CMSBrute(Checklist):

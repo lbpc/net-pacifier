@@ -13,7 +13,7 @@ from elasticsearch.helpers import scan
 from elasticsearch import Elasticsearch
 from pythonjsonlogger import jsonlogger
 
-from checklist import CMSBrute
+from pacifier.checklist import CMSBrute
 
 
 CHECK_INTERVAL = 120
@@ -102,7 +102,7 @@ def ban_bad_guys(hosts, addrs, interval, action, url_template):
 
     post_data = '\n'.join(map(format_post, addrs)) + '\n'
     with ThreadPoolExecutor(max_workers=len(hosts)) as executor:
-        executor.map(lambda p: requests.post(*p), ((url_template.format(h), post_data) for h in hosts))
+        executor.map(lambda p: requests.post(*p, timeout=3), ((url_template.format(h), post_data) for h in hosts))
 
 
 def setup_logger(level):
@@ -132,10 +132,10 @@ def main():
     signal.signal(signal.SIGTERM, handle_sigterm)
     signal.signal(signal.SIGUSR1, handle_sigusr1)
     setup_logger(LOG_LEVEL)
+    hosts = get_nginx_hosts()
     while True:
         try:
             start = time.time()
-            hosts = get_nginx_hosts()
 
             # Clean up bad_guys_remember.
             for ip in list(bad_guys_remember.keys()):
