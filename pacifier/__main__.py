@@ -13,7 +13,7 @@ from elasticsearch.helpers import scan
 from elasticsearch import Elasticsearch
 from pythonjsonlogger import jsonlogger
 
-from checklist import CMSBrute
+from pacifier.checklist import CMSBrute
 
 
 CHECK_INTERVAL = 120
