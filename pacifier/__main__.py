@@ -132,10 +132,10 @@ def main():
     signal.signal(signal.SIGTERM, handle_sigterm)
     signal.signal(signal.SIGUSR1, handle_sigusr1)
     setup_logger(LOG_LEVEL)
+    hosts = get_nginx_hosts()
     while True:
         try:
             start = time.time()
-            hosts = get_nginx_hosts()
 
             # Clean up bad_guys_remember.
             for ip in list(bad_guys_remember.keys()):

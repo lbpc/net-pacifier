@@ -1,1 +1,1 @@
-buildWebService(flake: true)
+buildWebService(flake: true, stackDeploy: true)
