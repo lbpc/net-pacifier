@@ -102,7 +102,7 @@ def ban_bad_guys(hosts, addrs, interval, action, url_template):
 
     post_data = '\n'.join(map(format_post, addrs)) + '\n'
     with ThreadPoolExecutor(max_workers=len(hosts)) as executor:
-        executor.map(lambda p: requests.post(*p), ((url_template.format(h), post_data) for h in hosts))
+        executor.map(lambda p: requests.post(*p, timeout=3), ((url_template.format(h), post_data) for h in hosts))
 
 
 def setup_logger(level):
